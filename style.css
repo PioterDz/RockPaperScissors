@@ -3,11 +3,11 @@
   display: grid;
   -ms-grid-columns: (33%)[3];
       grid-template-columns: repeat(3, 33%);
-  -ms-grid-rows: (20%)[5];
-      grid-template-rows: repeat(5, 20%);
+  -ms-grid-rows: 15% 15% 15% 15% 40%;
+      grid-template-rows: 15% 15% 15% 15% 40%;
 }
 
-.buttons {
+.container .buttons {
   width: 100%;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -27,20 +27,20 @@
   margin: 50px 0;
 }
 
-button {
+.container button {
   padding: 5% 10%;
   font-family: 'Roboto', sans serif;
   font-weight: 700;
-  margin: 20px;
+  margin: 15px;
   background-color: #596275;
   color: #f7d794;
 }
 
-button:hover {
+.container button:hover {
   cursor: pointer;
 }
 
-#output, #result {
+.container #output, .container #result {
   font-family: 'Roboto', sans serif;
   font-weight: 700;
   -ms-grid-row: 3;
@@ -58,12 +58,12 @@ button:hover {
           align-items: center;
 }
 
-#result {
+.container #result {
   -ms-grid-row: 4;
   grid-row: 4;
 }
 
-#new-game {
+.container #new-game {
   -ms-grid-row: 5;
   grid-row: 5;
   -ms-grid-column: 2;
@@ -72,12 +72,12 @@ button:hover {
   color: white;
 }
 
-.button-bg {
+.container .button-bg {
   background-color: #f7d794;
   color: #f19066;
 }
 
-.on-click {
+.container .on-click {
   background-color: #f19066;
   color: #f7d794;
 }
