@@ -15,12 +15,13 @@ var playerChoice;
 var computerChoice;
 var winner;
 
-newGame.addEventListener('click', function gameInit() {
+function gameInit() {
     maxRounds = prompt('How many rounds you want to play?');
     alert('Choose the paper, scissors or rock');
     console.log('new game ' + maxRounds);
-    clickFunction();
-})
+    returnValueOfClickedButton();
+}
+newGame.addEventListener('click', gameInit);
 
 function getComputerChoice() {
     var choices = ['rock', 'paper', 'scissors'];
@@ -53,7 +54,7 @@ function draw(playerChoice, computerChoice) {
     console.log(currentRound);
 }
 
-function game(playerChoice) {
+function compareBothChoices(playerChoice) {
     checkRounds();
     computerChoice = getComputerChoice();
     switch(playerChoice + ' ' + computerChoice) {
@@ -75,15 +76,15 @@ function game(playerChoice) {
     }
 }
 
-function clickFunction() {
+function returnValueOfClickedButton() {
     rock.addEventListener('click', function(){
-        game('rock');
+        compareBothChoices('rock');
     })
     scissors.addEventListener('click', function(){
-        game('scissors');
+        compareBothChoices('scissors');
     })
     paper.addEventListener('click', function(){
-        game('paper');
+        compareBothChoices('paper');
     })
 }
 
