@@ -14,6 +14,13 @@ var computerScore = 0;
 var playerChoice;
 var computerChoice;
 var winner;
+//modal
+var endGameModal = document.getElementById('end-game-modal');
+var closeModal = document.getElementById('close-modal');
+var playAgainBtn = document.getElementById('play-again');
+var quitPageBtn = document.getElementById('quit-page');
+var endGameResult = document.getElementById('end-game-result');
+
 
 function gameInit() {
     maxRounds = prompt('How many rounds you want to play?');
@@ -96,7 +103,7 @@ function checkRounds() {
 
 function gameOver() {
     whoWinner();
-    document.write('Game Over.' + winner);
+    endGameModal.style.display = "block";
 }
 
 function whoWinner() {
@@ -112,4 +119,26 @@ function whoWinner() {
     return winner;
 }
 
+//modal functions
 
+endGameResult.innerHTML = 'Game over, its ' + playerScore + ' to ' + computerScore + '. ' + winner;
+
+closeModal.addEventListener('click', function() {
+    endGameModal.style.display = "none";
+})
+
+quitPageBtn.addEventListener('click', function() {
+    window.history.back();
+})
+
+playAgainBtn.addEventListener('click', function() {
+    location.reload();
+})
+
+document.body.addEventListener('click', function(event) {
+    if (event.target == endGameModal) {
+        endGameModal.style.display = "none";
+    }
+})
+
+//end of modal functions
