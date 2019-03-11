@@ -106,7 +106,7 @@ function gameOver() {
     endGameModal.style.display = "block";
 }
 
-function whoWinner() {
+function whoWinner(winner) {
     if (playerScore > computerScore) {
         winner = 'You win';
     }
@@ -116,23 +116,32 @@ function whoWinner() {
     else if (playerScore === computerScore) {
         winner = 'Its draw';
     }
-    return winner;
+    endGameResult.innerHTML = 'Game over, its ' + playerScore + ' to ' + computerScore + '. ' + winner;
 }
 
+function resetGame() {
+    playerScore = 0;
+    computerScore = 0;
+    currentRound = 0;
+    output.innerHTML = " ";
+    playerResult.innerHTML = " ";
+    computerResult.innerHTML = " ";
+}
 //modal functions
-
-endGameResult.innerHTML = 'Game over, its ' + playerScore + ' to ' + computerScore + '. ' + winner;
 
 closeModal.addEventListener('click', function() {
     endGameModal.style.display = "none";
 })
 
 quitPageBtn.addEventListener('click', function() {
-    window.history.back();
+    endGameModal.style.display = "none";
 })
 
 playAgainBtn.addEventListener('click', function() {
-    location.reload();
+    resetGame();
+    console.log('reset score' + playerScore + computerScore + currentRound);
+    endGameModal.style.display = "none";
+    gameInit();
 })
 
 document.body.addEventListener('click', function(event) {
