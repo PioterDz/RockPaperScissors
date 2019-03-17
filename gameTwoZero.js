@@ -26,6 +26,7 @@ function gameInit() {
     maxRounds = prompt('How many rounds you want to play?');
     alert('Choose the paper, scissors or rock');
     console.log('new game ' + maxRounds);
+    returnValueOfClickedButton();
 }
 newGame.addEventListener('click', gameInit);
 
@@ -61,7 +62,6 @@ function draw(playerChoice, computerChoice) {
 }
 
 function compareBothChoices(playerChoice) {
-    checkRounds();
     computerChoice = getComputerChoice();
     switch(playerChoice + ' ' + computerChoice) {
         case 'rock scissors':
@@ -80,18 +80,41 @@ function compareBothChoices(playerChoice) {
             draw(playerChoice, computerChoice);
             break;
     }
+    checkRounds();
 }
 
-rock.addEventListener('click', function(){
-    compareBothChoices('rock');
-})
-scissors.addEventListener('click', function(){
-    compareBothChoices('scissors');
-})
-paper.addEventListener('click', function(){
-    compareBothChoices('paper');
-})
+// cos co zrobiłem 
+var whatHavePlayerMoveClass = document.querySelectorAll('.player-move');
+var whatPlayerHasJustClicked = whatHavePlayerMoveClass.getAttribute('data-move');
 
+console.log(whatPlayerHasJustClicked + 'playerclicked');
+
+for (i=0 ; i<whatHavePlayerMoveClass.length ; i++) {
+    returnValueOfClickedButton(whatPlayerHasJustClicked);
+}
+
+function playerMove();
+
+var params = {
+    playerScore: 0,
+    computerScore: 0,
+    maxRounds: 0,
+    currentRound: 0, 
+}
+// ---
+
+
+function returnValueOfClickedButton() {
+    rock.addEventListener('click', function(){
+        compareBothChoices('rock');
+    })
+    scissors.addEventListener('click', function(){
+        compareBothChoices('scissors');
+    })
+    paper.addEventListener('click', function(){
+        compareBothChoices('paper');
+    })
+}
 
 function checkRounds() {
     if (currentRound >= maxRounds) {
