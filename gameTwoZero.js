@@ -23,10 +23,9 @@ var endGameResult = document.getElementById('end-game-result');
 
 
 function gameInit() {
-    maxRounds = prompt('How many rounds you want to play?');
+    params.maxRounds = prompt('How many rounds you want to play?');
     alert('Choose the paper, scissors or rock');
-    console.log('new game ' + maxRounds);
-    returnValueOfClickedButton();
+    console.log('new game ' + params.maxRounds);
 }
 newGame.addEventListener('click', gameInit);
 
@@ -37,87 +36,113 @@ function getComputerChoice() {
 }
 
 function win(playerChoice, computerChoice) {
-    playerScore++;
-    currentRound++;
-    playerResult.innerHTML = playerScore;
-    computerResult.innerHTML = computerScore;
+    params.playerScore++;
+    params.currentRound++;
+    playerResult.innerHTML = params.playerScore;
+    computerResult.innerHTML = params.computerScore;
     output.innerHTML = 'You played ' + playerChoice + ' and computer played ' + computerChoice + '. You won this round.'
     console.log('win');
     console.log(currentRound);
 }
 function lose(playerChoice, computerChoice) {
-    computerScore++;
-    currentRound++;
-    computerResult.innerHTML = computerScore;
-    playerResult.innerHTML = playerScore;
+    params.computerScore++;
+    params.currentRound++;
+    computerResult.innerHTML = params.computerScore;
+    playerResult.innerHTML = params.playerScore;
     output.innerHTML = 'You played ' + playerChoice + ' and computer played ' + computerChoice + '. You lost this round.'
     console.log('lose');
     console.log(currentRound);
 }
 function draw(playerChoice, computerChoice) {
-    currentRound++;
+    params.currentRound++;
     output.innerHTML = 'You played ' + playerChoice + ' and computer also played ' + computerChoice + '. Its a draw.'
     console.log('draw');
     console.log(currentRound);
 }
 
-function compareBothChoices(playerChoice) {
+function playerMove(playerChoice) {
     computerChoice = getComputerChoice();
     switch(playerChoice + ' ' + computerChoice) {
         case 'rock scissors':
         case 'paper rock':
         case 'scissors paper':
+            params.progress.push({
+                roundNumber: currentRound,
+                player: playerChoice,
+                computer: computerChoice,
+                winner: 'Player',
+                playerScore: playerScore,
+                computerScore: computerScore
+            });
             win(playerChoice, computerChoice);
             break;
         case 'rock paper':
         case 'paper scissors':
         case 'scissors rock':
+            params.progress.push({
+                roundNumber: currentRound,
+                player: playerChoice,
+                computer: computerChoice,
+                winner: 'Computer',
+                playerScore: playerScore,
+                computerScore: computerScore
+            });
             lose(playerChoice, computerChoice);
             break;
         case 'rock rock':
         case 'paper paper':
         case 'scissors scissors':
+        params.progress.push({
+            roundNumber: currentRound,
+            player: playerChoice,
+            computer: computerChoice,
+            winner: 'Draw',
+            playerScore: playerScore,
+            computerScore: computerScore
+        });
             draw(playerChoice, computerChoice);
             break;
     }
     checkRounds();
 }
 
+
+rock.addEventListener('click', function(){
+    playerMove('rock');
+})
+scissors.addEventListener('click', function(){
+    playerMove('scissors');
+})
+paper.addEventListener('click', function(){
+    playerMove('paper');
+})
+
+
 // cos co zrobiłem 
 var whatHavePlayerMoveClass = document.querySelectorAll('.player-move');
-var whatPlayerHasJustClicked = whatHavePlayerMoveClass.getAttribute('data-move');
+
 
 console.log(whatPlayerHasJustClicked + 'playerclicked');
 
 for (i=0 ; i<whatHavePlayerMoveClass.length ; i++) {
-    returnValueOfClickedButton(whatPlayerHasJustClicked);
+    var whatPlayerHasJustClicked = whatHavePlayerMoveClass[i].getAttribute('data-move');
+    playerMove(whatPlayerHasJustClicked);
+
 }
 
-function playerMove();
 
 var params = {
     playerScore: 0,
     computerScore: 0,
-    maxRounds: 0,
-    currentRound: 0, 
+    maxRounds: '',
+    currentRound: 0,
+    progress: []
 }
 // ---
 
 
-function returnValueOfClickedButton() {
-    rock.addEventListener('click', function(){
-        compareBothChoices('rock');
-    })
-    scissors.addEventListener('click', function(){
-        compareBothChoices('scissors');
-    })
-    paper.addEventListener('click', function(){
-        compareBothChoices('paper');
-    })
-}
-
 function checkRounds() {
-    if (currentRound >= maxRounds) {
+    if (params.currentRound >= params.maxRounds) {
         gameOver();
     }
 }
@@ -128,22 +153,22 @@ function gameOver() {
 }
 
 function whoWinner(winner) {
-    if (playerScore > computerScore) {
+    if (params.playerScore > params.computerScore) {
         winner = 'You win';
     }
-    else if (playerScore < computerScore) {
+    else if (params.playerScore < params.computerScore) {
         winner = 'Computer wins';
     }
-    else if (playerScore === computerScore) {
+    else if (params.playerScore === params.computerScore) {
         winner = 'Its draw';
     }
-    endGameResult.innerHTML = 'Game over, its ' + playerScore + ' to ' + computerScore + '. ' + winner;
+    endGameResult.innerHTML = 'Game over, its ' + params.playerScore + ' to ' + params.computerScore + '. ' + winner;
 }
 
 function resetGame() {
-    playerScore = 0;
-    computerScore = 0;
-    currentRound = 0;
+    params.playerScore = 0;
+    params.computerScore = 0;
+    params.currentRound = 0;
     output.innerHTML = " ";
     playerResult.innerHTML = " ";
     computerResult.innerHTML = " ";

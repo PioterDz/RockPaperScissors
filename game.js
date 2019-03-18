@@ -1,12 +1,12 @@
 'use strict'
 
 var output = document.getElementById('output');
-var paper = document.getElementById('paper');
-var scissors = document.getElementById('scissors');
-var rock = document.getElementById('rock');
 var newGame = document.getElementById('new-game');
 var playerResult = document.getElementById('player-score');
 var computerResult = document.getElementById('computer-score');
+var paper = document.getElementById('paper');
+var scissors = document.getElementById('scissors');
+var rock = document.getElementById('rock');
 var maxRounds;
 var currentRound = 0;
 var playerScore = 0;
@@ -14,6 +14,7 @@ var computerScore = 0;
 var playerChoice;
 var computerChoice;
 var winner;
+var choices = ['rock', 'paper', 'scissors'];
 //modal
 var endGameModal = document.getElementById('end-game-modal');
 var closeModal = document.getElementById('close-modal');
@@ -22,15 +23,45 @@ var quitPageBtn = document.getElementById('quit-page');
 var endGameResult = document.getElementById('end-game-result');
 
 
-function gameInit() {
-    maxRounds = prompt('How many rounds you want to play?');
-    alert('Choose the paper, scissors or rock');
-    console.log('new game ' + maxRounds);
-}
 newGame.addEventListener('click', gameInit);
 
+function gameEventListeners() {
+
+    rock.addEventListener('click', function(){
+        compareBothChoices(choices[0]);
+        console.log('event listener');
+    })
+    paper.addEventListener('click', function(){
+        compareBothChoices(choices[1]);
+        console.log('event listener');
+    })
+    scissors.addEventListener('click', function(){
+        compareBothChoices(choices[2]);
+        console.log('event listener');
+    })
+}
+
+function maxRoundsPrompt() {
+    maxRounds = prompt('How many rounds you want to play?');
+    if (typeof maxRounds == null || typeof maxRounds == undefined || maxRounds == '0' || maxRounds.charAt(0) == '-') {
+        console.log(maxRounds + 'maxrounds');
+        alert('Error. Please, write a number greater then 0');
+        maxRoundsPrompt();
+    }
+    else {
+        alert('Choose the paper, scissors or rock');
+        gameEventListeners();
+    }
+    console.log('new game ' + maxRounds);
+}
+
+function gameInit() {
+    resetGame();
+    maxRoundsPrompt();
+
+}
+
 function getComputerChoice() {
-    var choices = ['rock', 'paper', 'scissors'];
     var randomNumber = Math.floor(Math.random() * 3);
     return choices[randomNumber];
 }
@@ -61,7 +92,7 @@ function draw(playerChoice, computerChoice) {
 }
 
 function compareBothChoices(playerChoice) {
-    checkRounds();
+    
     computerChoice = getComputerChoice();
     switch(playerChoice + ' ' + computerChoice) {
         case 'rock scissors':
@@ -80,22 +111,14 @@ function compareBothChoices(playerChoice) {
             draw(playerChoice, computerChoice);
             break;
     }
+    checkRounds();
 }
 
-rock.addEventListener('click', function(){
-    compareBothChoices('rock');
-})
-scissors.addEventListener('click', function(){
-    compareBothChoices('scissors');
-})
-paper.addEventListener('click', function(){
-    compareBothChoices('paper');
-})
-
-
 function checkRounds() {
-    if (currentRound >= maxRounds) {
+    if (currentRound == maxRounds) {
+        console.log('game over');
         gameOver();
+        modalEventListeners();
     }
 }
 
@@ -126,25 +149,26 @@ function resetGame() {
     computerResult.innerHTML = " ";
 }
 //modal functions
-
-closeModal.addEventListener('click', function() {
-    endGameModal.style.display = "none";
-})
-
-quitPageBtn.addEventListener('click', function() {
-    endGameModal.style.display = "none";
-})
-
-playAgainBtn.addEventListener('click', function() {
-    resetGame();
-    console.log('reset score' + playerScore + computerScore + currentRound);
-    endGameModal.style.display = "none";
-    gameInit();
-})
-
-document.body.addEventListener('click', function(event) {
-    if (event.target == endGameModal) {
+function modalEventListeners() {
+    closeModal.addEventListener('click', function() {
         endGameModal.style.display = "none";
-    }
-})
+    })
+
+    quitPageBtn.addEventListener('click', function() {
+        endGameModal.style.display = "none";
+    })
+
+    playAgainBtn.addEventListener('click', function() {
+        resetGame();
+        console.log('reset score' + playerScore + computerScore + currentRound);
+        endGameModal.style.display = "none";
+        gameInit();
+    })
+
+    document.body.addEventListener('click', function(event) {
+        if (event.target == endGameModal) {
+            endGameModal.style.display = "none";
+        }
+    })
+}
 
