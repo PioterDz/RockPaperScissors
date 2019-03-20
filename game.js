@@ -23,20 +23,16 @@ var endGameResult = document.getElementById('end-game-result');
 initialize();
 
 function initialize() {
-    showOrHideGameButtons('none');
+    changeElementsVisibility('none', [rock, paper, scissors]);
     gameEventListeners();
     newGame.addEventListener('click', gameInit);
     modalEventListeners();
 }
 
-function showOrHideGameButtons(buttonStatus) {
-    rock.style.display = buttonStatus;
-    paper.style.display = buttonStatus;
-    scissors.style.display = buttonStatus;
-}
-
-function showOrHideNewGameButton(buttonStatus) {
-    newGame.style.display = buttonStatus;
+function changeElementsVisibility(state, elements) { 
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = state;
+    }
 }
 
 
@@ -69,8 +65,8 @@ function maxRoundsPrompt() {
 function gameInit() {
     resetGame();
     maxRoundsPrompt();
-    showOrHideNewGameButton('none');
-    showOrHideGameButtons('inline-flex');
+    changeElementsVisibility('none', [newGame]);
+    changeElementsVisibility('inline-flex', [rock, paper, scissors]);
 }
 
 function getComputerChoice() {
@@ -132,7 +128,7 @@ function checkRounds() {
 
 function gameOver() {
     whoWinner();
-    showOrHideGameButtons('none');
+    changeElementsVisibility('none', [rock, paper, scissors]);
     endGameModal.style.display = "block";
 }
 
