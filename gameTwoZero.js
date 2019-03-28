@@ -15,10 +15,21 @@ var playerChoice;
 var computerChoice;
 var winner;
 var choices = ['rock', 'paper', 'scissors'];
+var playerMove = document.getElementsByClassName('player-move');
 //modal
 var endGameModal = document.getElementById('end-game-modal');
 var playAgainBtn = document.getElementById('play-again');
 var endGameResult = document.getElementById('end-game-result');
+// parameters of the game
+var params = {
+    maxRounds: ,
+    currentRound: ,
+    playerScore: ,
+    computerScore: ,
+    winner: ,
+    playerChoice: ,
+    computerChoice: 
+}
 
 initialize();
 
@@ -33,6 +44,11 @@ function changeElementsVisibility(state, elements) {
     for (var i = 0; i < elements.length; i++) {
         elements[i].style.display = state;
     }
+}
+// nowa funkcja 
+for (i=0 ; i<playerMove.length ; i++) {
+    var playerChoice = playerMove[i].getAttribute('data-move');
+    compareBothChoices(playerChoice);
 }
 
 
