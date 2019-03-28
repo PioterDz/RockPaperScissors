@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
-    
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src=”scripts.js”></script>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  
 </head>
 <body>
-    <div class="container">
+  
+  <div class="container">
 
-        <div class="buttons">
-          <button id="paper">Paper</button>
-          <button id="scissors">Scissors</button>
-          <button id="rock">Rock</button>
-        </div>
-        <button id="new-game">New Game</button>
-        <div id="output"></div>
-        <div id="result"></div>
-    
+    <div class="buttons">
+      <button id="paper" class="player-move" data-move="paper">Paper</button>
+      <button id="scissors" class="player-move" data-move="scissors">Scissors</button>
+      <button id="rock" class="player-move" data-move="rock">Rock</button>
+    </div>
+      <button id="new-game">New Game</button>
+      <div id="output"></div>
+      <div id="result">
+        <p>Player score </p><div id="player-score"></div>-<div id="computer-score"></div><p> Computer score</p>
       </div>
+
+      
+      <div id="end-game-modal" class="modal">
+        <div id="end-game-modal-content" class="modal-content">
+          <div id="end-game-result"></div>
+          <p>Do you want to play again?</p>
+          <button id="play-again">Play again</button>
+        </div>
+      </div>
+      
+    
+  </div>
+  <script type="text/javascript" src='game.js'></script>
 </body>
 </html>
