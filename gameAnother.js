@@ -7,10 +7,7 @@ var computerResult = document.getElementById('computer-score');
 var paper = document.getElementById('paper');
 var scissors = document.getElementById('scissors');
 var rock = document.getElementById('rock');
-var maxRounds;
-var currentRound = 0;
-var playerScore = 0;
-var computerScore = 0;
+
 var computerChoice;
 var winner;
 var choices = ['rock', 'paper', 'scissors'];
@@ -18,6 +15,13 @@ var playerMoveClass = document.querySelectorAll('.player-move');
 var playerChoiceOne;
 var playerChoiceAll = [];
 
+var params = {
+    'currentRound': 0,
+    'playerScore': 0,
+    'computerScore': 0,
+    'maxRounds': 0,
+    'progress': []
+};
 //modal
 var endGameModal = document.getElementById('end-game-modal');
 var playAgainBtn = document.getElementById('play-again');
@@ -58,8 +62,8 @@ function changeElementsVisibility(state, elements) {
 }
 
 function maxRoundsPrompt() {
-    maxRounds = prompt('How many rounds you want to play?');
-    if (typeof maxRounds == null || typeof maxRounds == undefined || maxRounds == '0' || maxRounds.charAt(0) == '-') {
+    params.maxRounds = prompt('How many rounds you want to play?');
+    if (typeof params.maxRounds == null || typeof params.maxRounds == undefined || params.maxRounds == '0' || params.maxRounds.charAt(0) == '-') {
 
         alert('Error. Please, write a number greater then 0');
         maxRoundsPrompt();
@@ -84,23 +88,23 @@ function getComputerChoice() {
 }
 
 function win(playerChoiceAll, computerChoice) {
-    playerScore++;
-    currentRound++;
-    playerResult.innerHTML = playerScore;
-    computerResult.innerHTML = computerScore;
+    params.playerScore++;
+    params.currentRound++;
+    playerResult.innerHTML = params.playerScore;
+    computerResult.innerHTML = params.computerScore;
     output.innerHTML = 'You played ' + playerChoiceAll + ' and computer played ' + computerChoice + '. You won this round.';
 
 }
 function lose(playerChoiceAll, computerChoice) {
-    computerScore++;
-    currentRound++;
-    computerResult.innerHTML = computerScore;
-    playerResult.innerHTML = playerScore;
+    params.computerScore++;
+    params.currentRound++;
+    computerResult.innerHTML = params.computerScore;
+    playerResult.innerHTML = params.playerScore;
     output.innerHTML = 'You played ' + playerChoiceAll + ' and computer played ' + computerChoice + '. You lost this round.'
 
 }
 function draw(playerChoiceAll, computerChoice) {
-    currentRound++;
+    params.currentRound++;
     output.innerHTML = 'You played ' + playerChoiceAll + ' and computer also played ' + computerChoice + '. Its a draw.'
 
 }
@@ -129,7 +133,7 @@ function playerMove(playerChoiceAll) {
 }
 
 function checkRounds() {
-    if (currentRound == maxRounds) {
+    if (params.currentRound == params.maxRounds) {
 
         gameOver();
     }
@@ -142,22 +146,22 @@ function gameOver() {
 }
 
 function whoWinner(winner) {
-    if (playerScore > computerScore) {
+    if (params.playerScore > params.computerScore) {
         winner = 'You win';
     }
-    else if (playerScore < computerScore) {
+    else if (params.playerScore < params.computerScore) {
         winner = 'Computer wins';
     }
-    else if (playerScore === computerScore) {
+    else if (params.playerScore === params.computerScore) {
         winner = 'Its draw';
     }
-    endGameResult.innerHTML = 'Game over, its ' + playerScore + ' to ' + computerScore + '. ' + winner;
+    endGameResult.innerHTML = 'Game over, its ' + params.playerScore + ' to ' + params.computerScore + '. ' + winner;
 }
 
 function resetGame() {
-    playerScore = 0;
-    computerScore = 0;
-    currentRound = 0;
+    params.playerScore = 0;
+    params.computerScore = 0;
+    params.currentRound = 0;
     output.innerHTML = " ";
     playerResult.innerHTML = " ";
     computerResult.innerHTML = " ";
