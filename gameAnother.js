@@ -8,16 +8,13 @@ var choices = ['rock', 'paper', 'scissors'];
 var computerChoice;
 var winner;
 var allGameButtons = document.querySelectorAll('.player-move');
-var paper = document.getElementById('paper');
-var scissors = document.getElementById('scissors');
-var rock = document.getElementById('rock');
-
+var tableWithResult = document.getElementById('table-with-result');
 var params = {
     'currentRound': 0,
     'playerScore': 0,
     'computerScore': 0,
     'maxRounds': undefined,
-    'progress': [{}]
+    'progress': []
 };
 //modal
 var endGameModal = document.getElementById('end-game-modal');
@@ -33,13 +30,12 @@ function initialize() {
     changeElementsVisibility('none', [paper, rock, scissors]);
     newGame.addEventListener('click', gameInit);
     modalEventListeners();
+    enableEventListeners();
 }
 
 function enableEventListeners() {
     for(let i=0; i<allGameButtons.length ; i++) {
         allGameButtons[i].addEventListener('click', function(e) {
-            console.log('click');
-            gettingAttributeFromButtons(allGameButtons[i]);
             var choice = allGameButtons[i].getAttribute('data-move');
             playerMove(choice);
         });
@@ -62,15 +58,14 @@ function maxRoundsPrompt() {
     else {
         alert('Choose the paper, scissors or rock');
     }
-    console.log(params.maxRounds + 'params');
 }
 
 function gameInit() {
-    resetGame();
+
     maxRoundsPrompt();
     changeElementsVisibility('none', [newGame]);
     changeElementsVisibility('inline-flex', [paper, rock, scissors]);
-    enableEventListeners();
+
 }
 
 function getComputerChoice() {
@@ -85,15 +80,14 @@ function win(choice, computerChoice) {
     computerResult.innerHTML = params.computerScore;
     output.innerHTML = 'You played ' + choice + ' and computer played ' + computerChoice + '. You won this round.';
 
-    params.progress[params.currentRound - 1] = 
+    params.progress.push(
         {
             'thisRoundNumber': params.currentRound,
             'thisRoundPlayerMove': choice,
             'thisRoundComputerMove': computerChoice,
             'thisRoundResult': 'You Win',
             'afterThisRoundOverallResult': 'Player ' + params.playerScore + ' : ' + params.computerScore + ' Computer'
-        };
-    console.log(params.progress[params.currentRound - 1], 'progressss');
+        });
 }
 function lose(choice, computerChoice) {
     params.computerScore++;
@@ -101,34 +95,30 @@ function lose(choice, computerChoice) {
     computerResult.innerHTML = params.computerScore;
     playerResult.innerHTML = params.playerScore;
     output.innerHTML = 'You played ' + choice + ' and computer played ' + computerChoice + '. You lost this round.'
-    params.progress[params.currentRound - 1] =
+    params.progress.push(
         {
             'thisRoundNumber': params.currentRound,
             'thisRoundPlayerMove': choice,
             'thisRoundComputerMove': computerChoice,
             'thisRoundResult': 'Computer Wins',
             'afterThisRoundOverallResult': 'Player ' + params.playerScore + ' : ' + params.computerScore + ' Computer'
-        };
-    console.log(params.progress[params.currentRound - 1], 'progressss');
+        });
 }
 function draw(choice, computerChoice) {
     params.currentRound++;
     output.innerHTML = 'You played ' + choice + ' and computer also played ' + computerChoice + '. Its a draw.'
-    params.progress[params.currentRound - 1] =
+    params.progress.push(
         {
             'thisRoundNumber': params.currentRound,
             'thisRoundPlayerMove': choice,
             'thisRoundComputerMove': computerChoice,
             'thisRoundResult': 'Draw',
             'afterThisRoundOverallResult': 'Player ' + params.playerScore + ' : ' + params.computerScore + ' Computer'
-        };
-    console.log(params.progress[params.currentRound - 1], 'progressss');
+        });
 }
 
 function playerMove(choice) {
-    console.log('playerMOVE');
     computerChoice = getComputerChoice();
-    console.log('computerChoice', computerChoice);
     switch(choice + ' ' + computerChoice) {
         case 'rock scissors':
         case 'paper rock':
@@ -147,14 +137,11 @@ function playerMove(choice) {
             break;
     }
     checkRounds();
-    console.log(params.playerScore + 'params');
-    console.log(params.computerScore + 'params');
 
 }
 
 function checkRounds() {
     if (params.currentRound == params.maxRounds) {
-
         gameOver();
     }
 }
@@ -180,20 +167,17 @@ function whoWinner(winner) {
 }
 
 function resetParams() {
+    
+    var toRemove = document.getElementsByClassName('next-row');
+    for (var i = toRemove.length - 1; i >= 0; i--) {
+        toRemove[0].parentNode.removeChild(toRemove[0]);
+    }
+
     params.currentRound = 0;
     params.playerScore = 0;
     params.computerScore = 0;
     params.maxRounds = undefined;
-    for (var i=0 ; i<params.progress.length ; i++) {
-        params.progress[i] = {
-            'thisRoundNumber': undefined,
-            'thisRoundPlayerMove': undefined,
-            'thisRoundComputerMove': undefined,
-            'thisRoundResult': undefined,
-            'afterThisRoundOverallResult': undefined
-        }
-        console.log('params.progress' + params.progress[i]);
-    }
+    params.progress = [];
 } 
 
 function resetGame() {
@@ -205,25 +189,15 @@ function resetGame() {
 
 
 function tableWithAllResults() {
-    var tableWithResult = document.getElementById('table-with-result');
 
     for(var i=0 ; i<params.progress.length ; i++) {
         var newRow = tableWithResult.insertRow(1);
-
-        var cell1 = newRow.insertCell(0);
-        cell1.innerHTML = params.progress[i].thisRoundNumber;
-
-        var cell2 = newRow.insertCell(1);
-        cell2.innerHTML = params.progress[i].thisRoundPlayerMove;
-
-        var cell3 = newRow.insertCell(2);
-        cell3.innerHTML = params.progress[i].thisRoundComputerMove;
-
-        var cell4 = newRow.insertCell(3);
-        cell4.innerHTML = params.progress[i].thisRoundResult;
-
-        var cell5 = newRow.insertCell(4);
-        cell5.innerHTML = params.progress[i].afterThisRoundOverallResult;
+        newRow.classList.add('next-row');
+        var progressKeys = Object.values(params.progress[i]);
+        for(var j=0 ; j<progressKeys.length ; j++) {
+            var cell = newRow.insertCell();
+            cell.innerHTML = progressKeys[j];
+        }
     }
 }
 
@@ -232,8 +206,8 @@ function tableWithAllResults() {
 function modalEventListeners() {
 
     playAgainBtn.addEventListener('click', function() {
-        resetGame();
         endGameModal.style.display = "none";
+        resetGame();
         gameInit();
     })
 
