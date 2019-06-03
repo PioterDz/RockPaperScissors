@@ -148,6 +148,7 @@ function checkRounds() {
 
 function gameOver() {
     whoWinner();
+    prepareTable();
     tableWithAllResults();
     changeElementsVisibility('none', [paper,rock,scissors] );
     endGameModal.style.display = "block";
@@ -167,11 +168,8 @@ function whoWinner(winner) {
 }
 
 function resetParams() {
-    
-    var toRemove = document.getElementsByClassName('next-row');
-    for (var i = toRemove.length - 1; i >= 0; i--) {
-        toRemove[0].parentNode.removeChild(toRemove[0]);
-    }
+
+    tableWithResult.innerHTML = '';
 
     params.currentRound = 0;
     params.playerScore = 0;
@@ -187,17 +185,22 @@ function resetGame() {
     resetParams();
 }
 
+function prepareTable() {
+    var headerRow = tableWithResult.insertRow(0);
+    headerRow.classList.add('first-row');
+    var progressKeys = Object.keys(params.progress[0]);
+
+    for(var key in progressKeys) {
+        headerRow.insertCell().innerHTML = progressKeys[key];
+    }
+}
 
 function tableWithAllResults() {
 
     for(var i=0 ; i<params.progress.length ; i++) {
         var newRow = tableWithResult.insertRow(1);
         newRow.classList.add('next-row');
-        var progressKeys = Object.values(params.progress[i]);
-        for(var j=0 ; j<progressKeys.length ; j++) {
-            var cell = newRow.insertCell();
-            cell.innerHTML = progressKeys[j];
-        }
+        Object.values(params.progress[i]).forEach(val => newRow.insertCell().innerHTML = val);
     }
 }
 
