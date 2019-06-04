@@ -186,16 +186,13 @@ function resetGame() {
 }
 
 function prepareTable() {
-    
+
     var headerLabels = ['Round number', 'Your move', 'Computer move', 'Round result', 'Overall result'];
 
     var headerRow = tableWithResult.insertRow(0);
     headerRow.classList.add('first-row');
 
-    for(var i=0 ; i<headerLabels.length ; i++) {
-        headerRow.insertCell().innerHTML = headerLabels[i];
-    }
-
+    headerLabels.forEach(item => headerRow.insertCell().innerHTML = item);
 }
 
 function tableWithAllResults() {
